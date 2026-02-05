@@ -3,9 +3,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lindopet</title>
+    <title>LindoPet - Toelettatura a Domicilio</title>
+    <!-- Tailwind CSS (via CDN per semplicità) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS PERSONALIZZATO (Da mettere in style.css) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #0F284E;
+        }
+        
+        .font-handwriting {
+            /* Simuliamo un font handwriting se non importato specificamente, oppure usiamo un sans-serif bold */
+            font-family: 'Inter', sans-serif; 
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        /* Nascondi le sezioni non attive */
+        .page-section {
+            display: none;
+        }
+        
+        /* La sezione attiva viene mostrata */
+        .page-section.active {
+            display: block;
+        }
+
+        /* Gestione transizioni semplici */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
 </head>
-<body>
-    
+<body class="antialiased bg-white">
+
+    <!-- NAVBAR (Visibile ovunque tranne Booking) -->
+    <nav id="navbar" class="bg-white py-4 px-6 fixed w-full top-0 z-50 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-black text-[#0F284E] flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                <!-- Icona Scissors -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                LINDOPET
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-bold text-[#0F284E] uppercase tracking-wide">
+                <button onclick="navigateTo('chi-siamo')" class="hover:text-[#E91E63] transition">Chi siamo</button>
+                <button onclick="navigateTo('come-funziona')" class="hover:text-[#E91E63] transition">Come funziona</button>
+                <button onclick="navigateTo('diventa-toelettatore')" class="hover:text-[#E91E63] transition">Diventa toelettatore</button>
+                <button onclick="navigateTo('booking')" class="bg-white border-2 border-[#0F284E] text-[#0F284E] px-6 py-2 rounded-full font-bold hover:bg-[#0F284E] hover:text-white transition">
+                    Prenota
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button onclick="toggleMobileMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 flex flex-col items-center space-y-4 font-bold text-[#0F284E]">
+            <button onclick="navigateTo('chi-siamo')">Chi siamo</button>
+            <button onclick="navigateTo('come-funziona')">Come funziona</button>
+            <button onclick="navigateTo('diventa-toelettatore')">Diventa toelettatore</button>
+            <button onclick="navigateTo('booking')" class="bg-[#E91E63] text-white px-6 py-2 rounded-full w-3/4">Prenota</button>
+        </div>
+    </nav>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <main id="main-content" class="pt-20"> <!-- pt-20 per compensare la navbar fissa -->
+
+        <!-- PAGINA: HOME -->
+        <div id="home" class="page-section active fade-in">
+            <!-- Hero -->
+            <header class="bg-[#0F284E] pt-12 pb-20 px-6 relative overflow-hidden">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 text-white z-10">
+                        <h1 class="text-5xl md:text-6xl font-black leading-tight mb-6">
+                            TOELETTATURA <span class="text-[#E91E63]">A DOMICILIO</span><br />
+                            PER CANI E GATTI.
+                        </h1>
+                        <p class="text-lg md:text-xl mb-8 font-medium opacity-90">
+                            Il servizio che ti fa risparmiare tempo e stress.<br/>
+                            Prenota online il tuo toelettatore di fiducia.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="navigateTo('booking')" class="bg-[#E91E63] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#c2185b] transition shadow-lg transform hover:scale-105">
+                                Prenota un appuntamento
+                            </button>
+                        </div>
+                        <div class="mt-4 flex items-center gap-2 text-sm opacity-80">
+                            <div class="flex text-yellow-400">★★★★★</div>
+                            <span>4.9/5 su 1000+ recensioni</span>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 mt-12 md:mt-0 relative">
+                        <div class="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl rotate-2 hover:rotate-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cane in asciugamano" class="w-full h-auto object-cover"/>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Value Props (Blue Box) -->
+            <section class="px-4 md:px-6 -mt-10 mb-20 relative z-10">
+                <div class="max-w-6xl mx-auto bg-[#3b5bdb] rounded-3xl p-8 md:p-16 text-white shadow-xl relative overflow-hidden">
+                    <h2 class="text-3xl md:text-4xl font-black text-center mb-12 font-handwriting">PERCHÉ LINDOPET?</h2>
+                    <div class="grid md:grid-cols-3 gap-12 text-center">
+                        <div class="flex flex-col items-center">
+                            <div class="mb-4 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+                            <h3 class="text-xl font-bold mb-2">TOELETTATURA AL TUO POSTO</h3>
+                            <p class="text-sm opacity-90">Il nostro van arriva direttamente a casa tua. Risparmia tempo e fatica negli spostamenti.</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="mb-4 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
+                            <h3 class="text-xl font-bold mb-2">PRODOTTI CERTIFICATI E SICURI</h3>
+                            <p class="text-sm opacity-90">Utilizziamo solo i migliori prodotti naturali per garantire la salute del pelo e della cute.</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="mb-4 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
+                            <h3 class="text-xl font-bold mb-2">PROFESSIONISTI SPECIALIZZATI</h3>
+                            <p class="text-sm opacity-90">Ogni toelettatore è formato e selezionato per offrire un servizio eccellente con amore.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature 1 -->
+            <section class="py-16 max-w-6xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cane bagnato" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="md:w-1/2">
+                        <h2 class="text-4xl font-black text-[#0F284E] mb-6">A domicilio <span class="text-[#E91E63]">non si stressa</span> ✨</h2>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">Il tuo amico a quattro zampe rimane nel suo ambiente familiare, senza la paura del viaggio in auto o l'attesa in gabbia.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#E91E63] text-white px-8 py-3 rounded-full font-bold hover:bg-[#c2185b] transition">Prenota un appuntamento</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature 2 -->
+            <section class="py-16 max-w-6xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Relax sul divano" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="md:w-1/2">
+                        <h2 class="text-4xl font-black text-[#0F284E] mb-6">E per te è <span class="text-[#E91E63]">super comodo</span> 😍</h2>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">Mentre noi ci occupiamo del tuo pet, tu puoi rilassarti sul divano, lavorare o fare quello che preferisci.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#E91E63] text-white px-8 py-3 rounded-full font-bold hover:bg-[#c2185b] transition">Prenota un appuntamento</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works (Home Version) -->
+            <section class="bg-[#0F284E] text-white py-20 px-6 mt-12 rounded-t-[3rem]">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-4xl font-black text-center mb-16">COME FUNZIONA?</h2>
+                    <div class="grid md:grid-cols-4 gap-8">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-24 h-24 bg-[#3b5bdb] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-lg border-4 border-[#0F284E]">1.</div>
+                            <h3 class="text-lg font-bold mb-3">PRENOTA ONLINE</h3>
+                            <p class="text-sm text-blue-100">Scegli il servizio, inserisci i dati del tuo pet e seleziona data e ora.</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-24 h-24 bg-[#3b5bdb] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-lg border-4 border-[#0F284E]">2.</div>
+                            <h3 class="text-lg font-bold mb-3">ARRIVA IL VAN</h3>
+                            <p class="text-sm text-blue-100">Il toelettatore arriva a casa tua con tutto l'occorrente.</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-24 h-24 bg-[#3b5bdb] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-lg border-4 border-[#0F284E]">3.</div>
+                            <h3 class="text-lg font-bold mb-3">RELAX ASSOLUTO</h3>
+                            <p class="text-sm text-blue-100">Goditi il tuo tempo libero mentre noi ci prendiamo cura del tuo amico.</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-24 h-24 bg-[#3b5bdb] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-lg border-4 border-[#0F284E]">4.</div>
+                            <h3 class="text-lg font-bold mb-3">PAGAMENTO SICURO</h3>
+                            <p class="text-sm text-blue-100">Paga comodamente online o dopo il servizio in totale sicurezza.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PAGINA: CHI SIAMO -->
+        <div id="chi-siamo" class="page-section fade-in">
+            <header class="bg-[#3b5bdb] pt-12 pb-24 px-6 text-center text-white">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6 uppercase">
+                        Portiamo la toelettatura<br/>professionale <span class="text-yellow-300">a casa tua</span>
+                    </h1>
+                    <p class="text-lg md:text-xl font-medium opacity-90 max-w-2xl mx-auto">
+                        Perché crediamo che la qualità e il benessere devono arrivare dove l'animale si sente a casa.
+                    </p>
+                </div>
+            </header>
+            <section class="py-20 bg-white px-6 text-center">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-black text-[#0F284E] mb-6 flex items-center justify-center gap-3">
+                        IL NOSTRO MANTRA: <span class="text-[#3b5bdb]">IL SUO BENESSERE</span> ❤️
+                    </h2>
+                    <p class="text-[#3b5bdb] text-lg font-medium italic leading-relaxed">
+                        Il nostro obiettivo è diffondere rispetto e benessere per i nostri amici pelosetti, offrendo un servizio professionale basato sull'eccellenza, qualità ed empatia.
+                    </p>
+                </div>
+            </section>
+            <!-- Feature 1 -->
+            <section class="py-16 max-w-6xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-black text-[#3b5bdb] mb-4">PROFESSIONISTI ECCELLENTI ✨</h2>
+                        <p class="text-gray-600 mb-8 leading-relaxed">La nostra squadra è composta da toelettatori esperti che amano il loro lavoro. Selezioniamo solo profili con grande esperienza.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition">Prenota un appuntamento</button>
+                    </div>
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </section>
+            <!-- Feature 2 -->
+            <section class="py-16 max-w-6xl mx-auto px-6 bg-blue-50/50 rounded-3xl my-8">
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-black text-[#3b5bdb] mb-4">PRODOTTI BIO DI MASSIMA QUALITÀ 🌿</h2>
+                        <p class="text-gray-600 mb-8 leading-relaxed">Utilizziamo esclusivamente prodotti biologici, naturali e ipoallergenici.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition">Prenota un appuntamento</button>
+                    </div>
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video">
+                        <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PAGINA: COME FUNZIONA -->
+        <div id="come-funziona" class="page-section fade-in">
+            <header class="bg-[#3b5bdb] pt-12 pb-24 px-6 text-center text-white">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl font-black leading-tight mb-6 uppercase">
+                        Lui resta nel suo<br/>ambiente e <span class="text-yellow-300">non si stressa</span>
+                    </h1>
+                    <p class="text-lg md:text-xl font-medium opacity-90 max-w-2xl mx-auto">
+                        La toelettatura a domicilio è la soluzione migliore per il benessere del tuo animale.
+                    </p>
+                </div>
+            </header>
+            <section class="py-20 bg-white px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-black text-[#0F284E] uppercase mb-4">Veniamo <span class="text-[#3b5bdb]">a casa tua</span> con tutto l'occorrente</h2>
+                <p class="text-[#3b5bdb] font-medium italic">Utilizziamo prodotti e strumenti professionali per garantirti un servizio eccellente senza sporcare il tuo ambiente.</p>
+            </section>
+            <!-- Steps -->
+            <section class="pb-20 px-6 max-w-6xl mx-auto space-y-24">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video"><img src="https://images.unsplash.com/photo-1557495235-340eb888a9fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" /></div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-black text-[#3b5bdb] mb-4">1. PRENOTI ONLINE</h3>
+                        <p class="text-gray-600 mb-6">Prenota online in pochi click, scegliendo l'orario e il giorno che preferisci.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-md font-bold hover:bg-blue-700 transition">PRENOTA UN APPUNTAMENTO</button>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video"><img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" /></div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-black text-[#3b5bdb] mb-4">2. VENIAMO A CASA TUA</h3>
+                        <p class="text-gray-600 mb-6">Il nostro toelettatore arriva con il furgone attrezzato direttamente sotto casa tua.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video"><img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" /></div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-black text-[#3b5bdb] mb-4">3. LO FACCIAMO BELLO</h3>
+                        <p class="text-gray-600 mb-6">Inizia il trattamento! Bagno, taglio, pulizia orecchie e taglio unghie: tutto fatto con amore e pazienza.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                    <div class="md:w-1/2 rounded-3xl overflow-hidden shadow-lg aspect-video"><img src="https://images.unsplash.com/photo-1584622050111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" /></div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-black text-[#3b5bdb] mb-4">4. LASCIAMO IN ORDINE</h3>
+                        <p class="text-gray-600 mb-6">Dopo la toelettatura, puliamo e aspiriamo tutto il pelo.</p>
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-md font-bold hover:bg-blue-700 transition">PRENOTA UN APPUNTAMENTO</button>
+                    </div>
+                </div>
+            </section>
+            <!-- Comparison Table -->
+            <section class="bg-[#3b5bdb] py-20 px-6">
+                <div class="max-w-4xl mx-auto text-center text-white mb-12">
+                    <h2 class="text-3xl font-black mb-2">ECCO PERCHÉ</h2>
+                    <h2 class="text-4xl font-black uppercase">SIAMO DIVERSI</h2>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-3 items-end gap-4 md:gap-8 text-white text-sm md:text-base">
+                    <div class="space-y-8 pb-8 text-left font-bold opacity-90">
+                        <div class="h-8 flex items-center">Veniamo a domicilio</div>
+                        <div class="h-8 flex items-center">Puoi assistere al suo fianco</div>
+                        <div class="h-8 flex items-center">Il pelosetto è meno stressato</div>
+                        <div class="h-8 flex items-center">Prenoti con poco anticipo</div>
+                        <div class="h-8 flex items-center">Professionalità</div>
+                    </div>
+                    <div class="bg-white text-[#0F284E] rounded-2xl py-8 px-4 shadow-2xl transform scale-105 z-10">
+                        <div class="flex justify-center mb-8 font-black text-xl">LINDOPET</div>
+                        <div class="space-y-8 flex flex-col items-center">
+                            <div class="text-[#3b5bdb] font-bold">✔</div>
+                            <div class="text-[#3b5bdb] font-bold">✔</div>
+                            <div class="text-[#3b5bdb] font-bold">✔</div>
+                            <div class="text-[#3b5bdb] font-bold">✔</div>
+                            <div class="text-[#3b5bdb] font-bold">✔</div>
+                        </div>
+                    </div>
+                    <div class="pb-8 space-y-8 flex flex-col items-center opacity-70">
+                        <div class="h-8 font-bold uppercase tracking-widest mb-2">ALTRI</div>
+                        <div>✖</div>
+                        <div>?</div>
+                        <div>✖</div>
+                        <div>?</div>
+                        <div>?</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PAGINA: DIVENTA TOELETTATORE -->
+        <div id="diventa-toelettatore" class="page-section fade-in">
+            <header class="bg-[#F26B3A] pt-12 pb-20 px-6 relative overflow-hidden">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 text-white z-10">
+                        <h1 class="text-5xl md:text-6xl font-black leading-tight mb-6 uppercase">
+                            Dai una svolta<br/>alla tua <span class="text-[#0F284E]">carriera</span>
+                        </h1>
+                        <p class="text-lg md:text-xl mb-8 font-medium opacity-90">
+                            Hai passione, cura e amore per gli animali?<br/>
+                            Entra nella nostra squadra e diventa un professionista.
+                        </p>
+                        <button class="bg-[#3b5bdb] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#2c43a0] transition shadow-lg transform hover:scale-105">Invia la tua candidatura</button>
+                    </div>
+                    <div class="md:w-1/2 mt-12 md:mt-0 relative">
+                        <div class="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl -rotate-2 hover:rotate-0 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1623387641168-d9803ddd3f35?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Toelettatrice" class="w-full h-auto object-cover"/>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <section class="bg-[#3b5bdb] py-20 px-6 text-white text-center">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-4xl font-black mb-12">PERCHÉ LINDOPET?</h2>
+                    <div class="grid md:grid-cols-4 gap-8">
+                        <div><h3 class="font-bold text-xl mb-2">FLESSIBILITÀ</h3><p class="text-sm opacity-90">Gestisci i tuoi orari in autonomia.</p></div>
+                        <div><h3 class="font-bold text-xl mb-2">GUADAGNI ALTI</h3><p class="text-sm opacity-90">Ottieni commissioni sopra la media.</p></div>
+                        <div><h3 class="font-bold text-xl mb-2">FORMAZIONE</h3><p class="text-sm opacity-90">Accesso continuo alla nostra Academy.</p></div>
+                        <div><h3 class="font-bold text-xl mb-2">ATTREZZATURA</h3><p class="text-sm opacity-90">Ti forniamo noi il furgone allestito.</p></div>
+                    </div>
+                    <button class="mt-12 bg-white text-[#3b5bdb] px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-lg">Candidati ora</button>
+                </div>
+            </section>
+            <section class="py-20 px-6 max-w-6xl mx-auto">
+                <h2 class="text-4xl font-black text-center text-[#0F284E] mb-4">ECCO COME FUNZIONA</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-[#F26B3A] p-8 rounded-3xl text-white"><h3 class="text-2xl font-black mb-4">COME LAVORIAMO?</h3><p>Il servizio è a domicilio con van attrezzato.</p></div>
+                    <div class="bg-gray-100 p-8 rounded-3xl text-[#F26B3A]"><h3 class="text-2xl font-black mb-4">IN CHE CITTÀ?</h3><p class="text-gray-600">Entriamo in contatto per vedere se siamo già attivi o potrai essere tu il primo della tua città, i clienti già li abbiamo noi!</p></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PAGINA: BOOKING (OVERLAY) -->
+        <div id="booking" class="fixed inset-0 z-[100] bg-white hidden">
+            <button onclick="navigateTo('home')" class="absolute top-4 right-4 z-50 bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#0F284E] shadow-lg hover:bg-white transition cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <iframe data-tally-src="https://tally.so/r/vGY2xQ?transparentBackground=1&formEventsForwarding=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Parti da qui..." class="w-full h-full border-0"></iframe>
+        </div>
+
+        <!-- SEZIONE RECENSIONI E FAQ (Visibile in tutte le pagine tranne Booking/Diventa) -->
+        <div id="shared-bottom-content">
+            <!-- Reviews -->
+            <section class="py-16 bg-gray-50 px-6">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="flex justify-center text-yellow-400 mb-2">★★★★★</div>
+                        <h2 class="text-3xl font-black text-[#0F284E]">CHI CI HA PROVATO DICE QUESTO.</h2>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                            <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                            <h3 class="font-bold text-lg mb-2">Andrea</h3>
+                            <p class="text-gray-600 text-sm">"Prima volta e ne sono rimasto super soddisfatto. Il cane era felice e profumato!"</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                            <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                            <h3 class="font-bold text-lg mb-2">Elena</h3>
+                            <p class="text-gray-600 text-sm">"Comodissimo, non devo più portare Fido in giro per la città. Servizio eccellente."</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                            <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                            <h3 class="font-bold text-lg mb-2">Marco</h3>
+                            <p class="text-gray-600 text-sm">"Ottimo servizio, puntuali e professionali. Il mio gatto non si è spaventato affatto."</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-12">
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-md font-bold hover:bg-blue-700 transition shadow-lg">Prenota</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="py-20 bg-white px-6">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-black text-[#0F284E] text-center mb-12">DOMANDE FREQUENTI</h2>
+                    <div class="space-y-4">
+                        <!-- FAQ Item 1 -->
+                        <div class="border-b border-gray-200">
+                            <button class="w-full flex justify-between items-center py-6 text-left font-bold text-[#0F284E]" onclick="toggleFaq(this)">
+                                <span>Come funziona la toelettatura a domicilio?</span>
+                                <span>▼</span>
+                            </button>
+                            <div class="hidden pb-6 text-gray-600 text-sm">Il nostro toelettatore arriverà a casa tua con tutto il necessario.</div>
+                        </div>
+                        <!-- FAQ Item 2 -->
+                        <div class="border-b border-gray-200">
+                            <button class="w-full flex justify-between items-center py-6 text-left font-bold text-[#0F284E]" onclick="toggleFaq(this)">
+                                <span>Quanto dura il servizio?</span>
+                                <span>▼</span>
+                            </button>
+                            <div class="hidden pb-6 text-gray-600 text-sm">In media tra i 45 e i 90 minuti.</div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-12">
+                        <button onclick="navigateTo('booking')" class="bg-[#3b5bdb] text-white px-8 py-3 rounded-md font-bold hover:bg-blue-700 transition shadow-lg">Prenota un appuntamento</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="bg-[#0F284E] text-white pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 border-b border-blue-900 pb-12 mb-8">
+            <div>
+                <div class="flex items-center gap-2 text-xl font-black mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                    LINDOPET
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-[#E91E63]">Il tuo account</h4>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-white">Accedi</a></li>
+                    <li><a href="#" class="hover:text-white">I miei ordini</a></li>
+                    <li><a href="#" class="hover:text-white">Crediti e Bonus</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6 text-[#E91E63]">Link utili</h4>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li><button onclick="navigateTo('home')" class="hover:text-white">Home</button></li>
+                    <li><button onclick="navigateTo('chi-siamo')" class="hover:text-white">Chi siamo</button></li>
+                    <li><button onclick="navigateTo('come-funziona')" class="hover:text-white">Come funziona</button></li>
+                    <li><button onclick="navigateTo('diventa-toelettatore')" class="hover:text-white">Diventa toelettatore</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+            <div class="flex flex-col md:flex-row gap-4">
+                <p>© 2024 LindoPet S.r.l. - Tutti i diritti riservati</p>
+                <p class="opacity-70">P.IVA: 12345678901</p>
+            </div>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <span>VISA</span>
+                <span>Mastercard</span>
+                <span>PayPal</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT JS (Da mettere in script.js) -->
+    <script src="https://tally.so/widgets/embed.js"></script>
+    <script>
+        // Logica di navigazione SPA (Single Page Application)
+        function navigateTo(pageId) {
+            // Se è booking, gestiamo l'overlay
+            if(pageId === 'booking') {
+                document.getElementById('booking').classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Blocca scroll
+                return;
+            } else {
+                document.getElementById('booking').classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Nascondi tutte le sezioni
+            document.querySelectorAll('.page-section').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Mostra la sezione target
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+
+            // Gestione visibilità sezioni condivise (Footer, Reviews, FAQ)
+            // Nascondiamo le recensioni/faq se siamo in pagine specifiche se richiesto (es. diventa-toelettatore)
+            // Per ora lasciamo visibile il blocco shared tranne in booking (già gestito dall'overlay full screen)
+            const shared = document.getElementById('shared-bottom-content');
+            if (pageId === 'diventa-toelettatore') {
+                shared.style.display = 'none';
+            } else {
+                shared.style.display = 'block';
+            }
+
+            // Chiudi menu mobile se aperto
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Toggle FAQ
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            content.classList.toggle('hidden');
+            const arrow = button.querySelector('span:last-child');
+            arrow.textContent = content.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Init Tally se necessario (lo script embed fa già il grosso)
+    </script>
 </body>
 </html>
